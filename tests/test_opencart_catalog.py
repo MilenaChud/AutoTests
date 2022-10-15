@@ -15,6 +15,7 @@ def test_check_main(run_browser, base_url):
     wait.until(EC.visibility_of_element_located((By.TAG_NAME, "h3")))
 
 
+
 def test_check_card_product(run_browser, base_url):
     wait = WebDriverWait(run_browser, 10)
     run_browser.get(base_url + "/camera/canon-eos-5d")

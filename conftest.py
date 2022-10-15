@@ -8,6 +8,7 @@ import os
 from selenium import webdriver
 
 
+
 @pytest.fixture
 def area_tr(a, b, c):
     triangle = Triangle(a, b, c)
