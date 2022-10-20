@@ -32,5 +32,5 @@ for lib in library:
     if y == len_users:
         y = 0
 
-with open("result.json", "w") as result:
+with open("../src/result.json", "w") as result:
     json.dump(users, result, indent=4)
