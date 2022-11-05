@@ -8,7 +8,9 @@ from task2.Rectangle import Rectangle
 import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-#from selenium.webdriver.safari.options import Options
+
+
+# from selenium.webdriver.safari.options import Options
 
 
 @pytest.fixture
@@ -83,8 +85,8 @@ def run_browser(request):
     caps = {
         "browserName": browser,
         "platformname": "WINDOWS",
-        #"browserVersion": browser_version,
-        #"screenResolution": "1280x720",
+        # "browserVersion": browser_version,
+        # "screenResolution": "1280x720",
     }
 
     options = Options()
@@ -104,7 +106,6 @@ def run_browser(request):
     take_screenshot(driver, test_name)
 
     driver.close()
-
 
 
 """
