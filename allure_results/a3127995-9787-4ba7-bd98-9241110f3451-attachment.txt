@@ -1,0 +1,5 @@
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:22 Opening url: http://192.168.0.8:8081/index.php?route=account/register
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:51 find_of_element_tag
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:75 find_of_element_path
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:35 find_of_element_name
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:75 find_of_element_path
