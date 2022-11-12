@@ -1,0 +1,6 @@
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:22 Opening url: http://192.168.0.8:8081/admin
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:43 find_of_element_class_name
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:75 find_of_element_path
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:59 find_of_element_link
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:83 find_button
+[32mINFO    [0m tests.page_object.BasePage:BasePage.py:35 find_of_element_name
