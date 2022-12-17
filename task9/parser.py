@@ -5,12 +5,14 @@ sp = []
 
 def read_and_parsing_file():
     max_cpu = 0
-    user_cpu = ''
+    max_mem = 0
+    user_cpu_proc = ''
+    max_mem_cpu = ''
     result = None
     index = None
-    count_pid = 0
     count_memory = 0
     count_cpu = 0
+    count_process = 0
 
     res = run(['ps', 'aux'], stdout=PIPE)
     std = res.stdout.decode().split('\n')
@@ -19,11 +21,16 @@ def read_and_parsing_file():
 
     for p in std[1:]:
         if not p == '':
+            count_process += 1
             t = p.split(maxsplit=len(titles))
             user_cpu = float(t[titles.index('%CPU')])
+            user_mem = float(t[titles.index('%MEM')])
             if user_cpu >= max_cpu:
                 max_cpu = user_cpu
-                user_cpu = t[titles.index('COMMAND')]
+                user_cpu_proc = t[titles.index('COMMAND')]
+            if user_mem >= max_mem:
+                max_mem = user_mem
+                max_mem_cpu = t[titles.index('COMMAND')]
     
     for i in range(l):
         str_before = std[i].split(" ")
@@ -45,20 +52,27 @@ def read_and_parsing_file():
                 result = list(set(sp))
 
         for next_index in range(len(str_before)):
-            if next_index == 1:
-                count_pid += int(str_before[next_index])
-
-            elif next_index == 2:
+            if next_index == 2:
                 count_cpu += float(str_before[next_index])
 
             elif next_index == 3:
                 count_memory += float(str_before[next_index])
 
     print("Пользователи системы:", result)
-    print("Количество запущенных процессов всего:", count_pid)
+    print("Количество запущенных процессов всего:", count_process)
     print("Всего CPU используется: ", count_cpu)
-    print("Всего CPU используется: ", count_memory)
-    print('Max CPU usage: {} {}'.format(max_cpu, user_cpu))
+    print("Всего RAM используется: ", count_memory)
+    print('Max CPU usage: {} {}'.format(max_cpu, user_cpu_proc))
+    print('Max RAM usage: {} {}'.format(max_mem, max_mem_cpu))
+
+    with open('17122022.txt', 'w') as f:
+        for user in result:
+            f.write("Пользователь системы: " + user + '\n')
+        f.write("Количество запущенных процессов всего: " + str(count_process) + '\n')
+        f.write("Всего CPU используется: " + str(count_cpu) + '\n')
+        f.write("Всего RAM используется: " + str(count_memory) + '\n')
+        f.write("Max CPU usage: " + str(max_cpu) + ' ' + str(user_cpu_proc) + '\n')
+        f.write("Max RAM usage: " + str(max_mem) + ' ' + str(max_mem_cpu) + '\n')
 
 
 if __name__ == '__main__':
