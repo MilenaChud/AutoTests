@@ -1,107 +1,88 @@
 from subprocess import PIPE, run, call
-import re
-
-sp = []
-sp1 = {}
-sp2 = {}
-
-
-def run_command():
-    t = run(["ps aux >> 07122022.txt"], shell=True)
-    print(t)
-    return t
 
 
 def read_and_parsing_file():
-    with open("07122022.txt", "r") as f:
-        text = f.read().split("\n")
-        l = len(text)
-        result = None
-        pr = 0
-        pr1 = 0
-        pr2 = 0
-        pr3 = 0
-        pr4 = 0
-        pr5 = 0
-        count_pid = 0
+    max_cpu = 0
+    max_mem = 0
+    user_cpu_proc = ''
+    max_mem_cpu = ''
+    result = None
+    k = []
+    count_memory = 0
+    count_cpu = 0
+    count_process = 0
+    users = {}
 
-        for i in range(l):
-            str_before = text[i].split(" ")
+    res = run(['ps', 'aux'], stdout=PIPE)
+    std = res.stdout.decode().split('\n')
+    print(std)
+    titles = std[0].split()
+    l = len(std)
 
-            count = 0
-            for j in str_before:
-                if j == '':
-                    count += 1
+    for p in std[1:]:
+        if not p == '':
+            count_process += 1
+            t = p.split(maxsplit=len(titles))
+            user_cpu = float(t[titles.index('%CPU')])
+            user_mem = float(t[titles.index('%MEM')])
+            user = str(t[titles.index('USER')])
+            k.append(user)
+            result = list(set(k))
+            if user_cpu >= max_cpu:
+                max_cpu = user_cpu
+                user_cpu_proc = t[titles.index('COMMAND')]
+            if user_mem >= max_mem:
+                max_mem = user_mem
+                max_mem_cpu = t[titles.index('COMMAND')]
 
-            for _ in range(count):
-                str_before.remove('')
+    for j in result:
+        sum = 0
+        for r in std[1:]:
+            if j in r:
+                sum += 1
 
-            for k in str_before:
-                if k == "USER":
-                    index = str_before.index("USER")
-                    str_before.clear()
-                else:
-                    sp.append(str_before[index])
-                    result = list(set(sp))
+        users[j] = sum
 
-            count_memory = 0
-            count_cpu = 0
-            for next_index in range(len(str_before)):
-                if next_index == 1:
-                    count_pid += int(str_before[next_index])
+    for i in range(l):
+        str_before = std[i].split(" ")
 
-                elif next_index == 2:
-                    count_cpu += float(str_before[next_index])
+        count = 0
+        for j in str_before:
+            if j == '':
+                count += 1
 
-                elif next_index == 3:
-                    count_memory += float(str_before[next_index])
+        for _ in range(count):
+            str_before.remove('')
 
-            pat1 = "^\w{0,19}\s{0,10}\d{0,3}\s{0,10}\d{0,1}.\d{0,2}\s{0,2}\d{0,1}.\d{0,2}"
-            patt1 = re.compile(pat1, re.MULTILINE)
-            pattt1 = re.findall(patt1, text[i])
+        for k in str_before:
+            if k == "USER":
+                str_before.clear()
 
-            for h in pattt1:
-                if "USER" in h:
-                    pattt1.clear()
-                else:
-                    ko = str(h).split(" ")
-                    if "root" in h:
-                        koo = int(ko[-5])
-                        koo_cu = float(ko[-3])
-                        koo_mem = float(ko[-1])
-                        pr += koo
-                        pr2 += koo_cu
-                        pr3 += koo_mem
-                    elif "mil" in h:
-                        ko1 = int(ko[-5])
-                        koo_cu1 = float(ko[-3])
-                        koo_mem1 = float(ko[-1])
-                        pr1 += ko1
-                        pr4 += koo_cu1
-                        pr5 += koo_mem1
+        for next_index in range(len(str_before)):
+            if next_index == 2:
+                count_cpu += float(str_before[next_index])
 
-            if pr2 > pr4:
-                print("Больше памяти потребляет root: ", pr2)
-            else:
-                print("Больше памяти потребляет mil: ", pr4)
+            elif next_index == 3:
+                count_memory += float(str_before[next_index])
 
-            if pr3 > pr5:
-                print("Больше всего CPU использует root: ", pr2)
-            else:
-                print("Больше всего CPU использует mil: ", pr4)
-
-
-        sp1 = {"root": pr}
-        sp2 = {"mil": pr1}
-
-    print("Пользовательских процессов:", sp1)
-    print("Пользовательских процессов:", sp2)
     print("Пользователи системы:", result)
-    print("Количество запущенных процессов всего:", count_pid)
-    print("Всего CPU используется: ", count_cpu)
-    print("Всего CPU используется: ", count_memory)
+    print("Пользовательских процессов:", users)
+    print("Количество запущенных процессов всего:", count_process)
+    print("Всего CPU используется: ", round(count_cpu, 1))
+    print("Всего RAM используется: ", round(count_memory, 1))
+    print('Max CPU usage: {} {}'.format(max_cpu, user_cpu_proc[:20]))
+    print('Max RAM usage: {} {}'.format(max_mem, max_mem_cpu[:20]))
+
+    with open('17122022.txt', 'w') as f:
+        for user in result:
+            f.write("Пользователь системы: " + user + '\n')
+        f.write("Пользовательских процессов:" + str(users) + '\n')
+        f.write("Количество запущенных процессов всего: " + str(count_process) + '\n')
+        f.write("Всего CPU используется: " + str(count_cpu) + '\n')
+        f.write("Всего RAM используется: " + str(count_memory) + '\n')
+        f.write("Max CPU usage: " + str(max_cpu) + ' ' + str(user_cpu_proc) + '\n')
+        f.write("Max RAM usage: " + str(max_mem) + ' ' + str(max_mem_cpu) + '\n')
 
 
 if __name__ == '__main__':
-    run_command()
     read_and_parsing_file()

@@ -1,8 +1,8 @@
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1  0.0  0.0    900   576 ?        Sl   00:20   0:00 /init
-root         9  0.0  0.0    892    80 ?        Ss   00:20   0:00 /init
-root        10  0.0  0.0    892    80 ?        S    00:20   0:00 /init
-mil         11  0.0  0.0  10188  5324 pts/0    Ss   00:20   0:00 -bash
-mil         89  0.0  0.0  16460 10000 pts/0    S+   01:44   0:00 python3 parser.py
-mil         90  0.0  0.0   2612   596 pts/0    S+   01:44   0:00 /bin/sh -c ps aux >> 07122022.txt
-mil         91  0.0  0.0  10616  3216 pts/0    R+   01:44   0:00 ps aux
+root         1  0.0  0.0    892   552 ?        Sl   Dec21   0:00 /init
+root         9  0.0  0.0    892    80 ?        Ss   Dec21   0:00 /init
+root        10  0.0  0.0    892    80 ?        S    Dec21   0:00 /init
+mil         11  0.0  0.0  10188  5296 pts/0    Ss   Dec21   0:00 -bash
+mil        118  0.0  0.0  16212  9752 pts/0    S+   00:17   0:00 python3 parser.py
+mil        119  0.0  0.0   2612   600 pts/0    S+   00:17   0:00 /bin/sh -c ps aux >> 07122022.txt
+mil        120  0.0  0.0  10616  3252 pts/0    R+   00:17   0:00 ps aux
