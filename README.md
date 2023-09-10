@@ -1,2 +1,2 @@
 # AutoTests
-Adding files for course
+Adding files for course OTUS
